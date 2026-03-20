@@ -8,11 +8,11 @@ Game::Game(): window(sf::VideoMode(1400, 400), "MannyTaiko") {
   // set fps limit
   window.setFramerateLimit(60);
   // load beatmap
-  if (!beatMap.load("maps/moonlight.txt")) {
+  if (!beatMap.load("maps/megalovania.txt")) {
     std::cerr << "Failed to load beatmap!" << std::endl;
   }
   // load music
-  if (!music.openFromFile("assets/moonlight.ogg")) {
+  if (!music.openFromFile("assets/MEGALOVANIA.ogg")) {
     std::cerr << "Failed to load music!" << std::endl;
   }
   music.play();
