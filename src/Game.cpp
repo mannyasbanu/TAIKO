@@ -15,6 +15,14 @@ Game::Game(): window(sf::VideoMode(1400, 400), "MannyTaiko") {
   if (!music.openFromFile("assets/test.ogg")) {
     std::cerr << "Failed to load music!" << std::endl;
   }
+  // load font
+  if (!font.loadFromFile("assets/PressStart2P-Regular.ttf")) {
+    std::cerr << "Failed to load font!" << std::endl;
+  }
+  // setup text
+  scoreText.setFont(font); scoreText.setCharacterSize(24);
+  comboText.setFont(font); comboText.setCharacterSize(36);
+  resultText.setFont(font); resultText.setCharacterSize(48);
 }
 
 void Game::run() {
@@ -63,8 +71,6 @@ void Game::update(float dt) {
   }
 
   if (resultTimer > 0) resultTimer -= dt;
-
-  std::cout << "Song Time: " << songTimeMs << std::endl;
 }
 
 void Game::handleInput(NoteType type) {
@@ -105,6 +111,8 @@ void Game::handleInput(NoteType type) {
 }
 
 void Game::render() {
+  auto [W, H] = window.getSize();
+  
   // clear screen
   window.clear(sf::Color::Black);
 
@@ -129,7 +137,29 @@ void Game::render() {
     window.draw(circle);
   }
 
-  // draw score/combo once font added
+  // draw score
+  scoreText.setString("Score: " + std::to_string(score));
+  scoreText.setPosition(W * 0.02f, H * 0.05f);
+  window.draw(scoreText);
+
+  // draw combo
+  comboText.setString(combo > 1 ? std::to_string(combo) + "x" : "");
+  comboText.setOrigin(comboText.getLocalBounds().width / 2, 0);
+  comboText.setPosition(W * 0.5f, H * 0.65f);
+  window.draw(comboText);
+
+  // draw last result
+  if (resultTimer > 0) {
+    resultText.setString(lastResult);
+    resultText.setOrigin(resultText.getLocalBounds().width / 2, 0);
+    resultText.setPosition(W * 0.5f, H * 0.3f);
+
+    // fade out
+    sf::Uint8 alpha = static_cast<sf::Uint8>((resultTimer / 600.0f) * 255);
+    resultText.setFillColor(sf::Color(255, 255, 255, alpha));
+
+    window.draw(resultText);
+  }
 
   window.display();
 }

@@ -25,6 +25,8 @@ private:
   int combo = 0;
 
   // visuals
+  sf::Font font;
+  sf::Text scoreText, comboText, resultText;
   std::string lastResult = "";
   float resultTimer = 0.0f;
 
