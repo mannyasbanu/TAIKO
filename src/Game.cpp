@@ -63,6 +63,8 @@ void Game::update(float dt) {
   }
 
   if (resultTimer > 0) resultTimer -= dt;
+
+  std::cout << "Song Time: " << songTimeMs << std::endl;
 }
 
 void Game::handleInput(NoteType type) {

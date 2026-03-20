@@ -12,7 +12,7 @@ public:
   void run();
 private:
   void processEvents(); // process input
-  void update(float dt); // update game state (dt is time since last frame in seconds)
+  void update(float dt); // update game state (dt is time since last frame in milliseconds)
   void render(); // render to screen
   void handleInput(NoteType type);
 
@@ -29,7 +29,7 @@ private:
   float resultTimer = 0.0f;
 
   // class level constants
-  static constexpr float NOTE_SPEED = 0.f; // pixels per ms
+  static constexpr float NOTE_SPEED = 1.0f; // pixels per ms
   static constexpr float HIT_ZONE_X = 200.0f; // x position of hit zone
   static constexpr float NOTE_RADIUS = 30.0f;
 };
