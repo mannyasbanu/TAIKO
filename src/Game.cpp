@@ -8,13 +8,14 @@ Game::Game(): window(sf::VideoMode(1400, 400), "MannyTaiko") {
   // set fps limit
   window.setFramerateLimit(60);
   // load beatmap
-  if (!beatMap.load("maps/test.txt")) {
+  if (!beatMap.load("maps/moonlight.txt")) {
     std::cerr << "Failed to load beatmap!" << std::endl;
   }
   // load music
-  if (!music.openFromFile("assets/test.ogg")) {
+  if (!music.openFromFile("assets/moonlight.ogg")) {
     std::cerr << "Failed to load music!" << std::endl;
   }
+  music.play();
   // load font
   if (!font.loadFromFile("assets/PressStart2P-Regular.ttf")) {
     std::cerr << "Failed to load font!" << std::endl;
@@ -23,6 +24,15 @@ Game::Game(): window(sf::VideoMode(1400, 400), "MannyTaiko") {
   scoreText.setFont(font); scoreText.setCharacterSize(24);
   comboText.setFont(font); comboText.setCharacterSize(36);
   resultText.setFont(font); resultText.setCharacterSize(48);
+  // load sound effects
+  if (!donBuffer.loadFromFile("assets/don.wav")) {
+    std::cerr << "Failed to load don sound!" << std::endl;
+  }
+  if (!kaBuffer.loadFromFile("assets/ka.wav")) {
+    std::cerr << "Failed to load ka sound!" << std::endl;
+  }
+  donSound.setBuffer(donBuffer);
+  kaSound.setBuffer(kaBuffer);
 }
 
 void Game::run() {
@@ -74,6 +84,9 @@ void Game::update(float dt) {
 }
 
 void Game::handleInput(NoteType type) {
+  // sound effect
+  if (type == NoteType::Don) donSound.play();
+  else kaSound.play();
   // find closest unhit matching note in hit window
   Note* best = nullptr;
   float bestDiff = Judge::GOOD_WINDOW_MS; // only judge notes within good window

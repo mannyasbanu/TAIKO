@@ -30,6 +30,10 @@ private:
   std::string lastResult = "";
   float resultTimer = 0.0f;
 
+  // sound effects
+  sf::SoundBuffer donBuffer, kaBuffer;
+  sf::Sound donSound, kaSound;
+
   // class level constants
   static constexpr float NOTE_SPEED = 0.5f; // pixels per ms
   static constexpr float HIT_ZONE_X = 200.0f; // x position of hit zone
