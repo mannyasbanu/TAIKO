@@ -29,7 +29,7 @@ private:
   float resultTimer = 0.0f;
 
   // class level constants
-  static constexpr float NOTE_SPEED = 1.0f; // pixels per ms
+  static constexpr float NOTE_SPEED = 0.5f; // pixels per ms
   static constexpr float HIT_ZONE_X = 200.0f; // x position of hit zone
   static constexpr float NOTE_RADIUS = 30.0f;
 };

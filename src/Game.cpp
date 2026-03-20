@@ -54,7 +54,7 @@ void Game::update(float dt) {
     note.x = HIT_ZONE_X + (note.timeMs - songTimeMs) * NOTE_SPEED;
 
     // auto miss notes that pass hit zone
-    if (note.x < HIT_ZONE_X - NOTE_RADIUS * 2) {
+    if (songTimeMs > note.timeMs + Judge::GOOD_WINDOW_MS) {
       note.missed = true;
       combo = 0;
       lastResult = "MISS";
@@ -70,14 +70,14 @@ void Game::update(float dt) {
 void Game::handleInput(NoteType type) {
   // find closest unhit matching note in hit window
   Note* best = nullptr;
-  float bestDist = 9999.0f;
+  float bestDiff = Judge::GOOD_WINDOW_MS; // only judge notes within good window
 
   for (auto& note: beatMap.notes) {
     if (note.hit || note.missed) continue; // skip hit/missed notes
     if (note.type != type) continue; // skip wrong type
-    float dist = std::abs(note.timeMs - songTimeMs); // distance in ms from beatmap timing
-    if (dist < bestDist) {
-      bestDist = dist;
+    float diff = std::abs(note.timeMs - songTimeMs); // distance in ms from beatmap timing
+    if (diff <= bestDiff) {
+      bestDiff = diff;
       best = &note;
     }
   }
