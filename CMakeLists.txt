@@ -1,3 +1,4 @@
+# Combines cpp files and SFML library to CMake which compiles and links them together to create an executable for the Taiko game
 cmake_minimum_required(VERSION 3.16) # sets the oldest compatible CMake version
 project(Taiko) # names project
 set(CMAKE_CXX_STANDARD 17) # tells compiler to use C++17

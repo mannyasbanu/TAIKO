@@ -1,4 +1,4 @@
-#include <BeatMap.hpp>
+#include "BeatMap.hpp"
 #include <fstream>
 #include <sstream>
 #include <iostream>
