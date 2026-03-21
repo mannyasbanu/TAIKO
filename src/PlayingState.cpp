@@ -5,6 +5,8 @@
 #include <iostream>
 #include "PauseState.hpp"
 #include "ResultState.hpp"
+#include "Skin.hpp"
+#include "NoteRender.hpp"
 // Manny STL ^
 
 PlayingState::PlayingState(sf::Font& font): font(font) {
@@ -16,6 +18,7 @@ PlayingState::PlayingState(sf::Font& font): font(font) {
   if (!music.openFromFile("assets/Alone.ogg")) {
     std::cerr << "Failed to load music!" << std::endl;
   }
+  music.setVolume(25);
   music.play();
   // load font
   if (!font.loadFromFile("assets/PressStart2P-Regular.ttf")) {
@@ -25,6 +28,9 @@ PlayingState::PlayingState(sf::Font& font): font(font) {
   scoreText.setFont(font); scoreText.setCharacterSize(24);
   comboText.setFont(font); comboText.setCharacterSize(36);
   resultText.setFont(font); resultText.setCharacterSize(48);
+  scoreText.setFillColor(sf::Color::Black);
+  comboText.setFillColor(sf::Color::Black);
+  resultText.setFillColor(sf::Color::Black);
   // load sound effects
   if (!donBuffer.loadFromFile("assets/don.wav")) {
     std::cerr << "Failed to load don sound!" << std::endl;
@@ -34,6 +40,10 @@ PlayingState::PlayingState(sf::Font& font): font(font) {
   }
   donSound.setBuffer(donBuffer);
   kaSound.setBuffer(kaBuffer);
+  // load skin
+  if (!skin.load("assets/skins/default/")) {
+    std::cerr << "Failed to load skin, using fallback colours" << std::endl;
+  }
 }
 
 void PlayingState::handleEvent(sf::Event& event, Game& game) {
@@ -71,16 +81,20 @@ void PlayingState::update(float dt, Game& game) {
   }
 
   if (resultTimer > 0) resultTimer -= dt;
+  if (hitEffectTimer > 0) hitEffectTimer -= dt;
 }
 
 void PlayingState::handleInput(NoteType type) {
   // sound effect
   if (type == NoteType::Don) donSound.play();
   else kaSound.play();
+  // hit effect
+  hitEffectTimer = 100.0f;
+  // only judge notes visibly touching hit zone - convert pixel overlap to ms
+  float touchWindowMs = (skin.noteRadius * 2) / NOTE_SPEED;
   // find closest unhit matching note in hit window
   Note* best = nullptr;
-  float bestDiff = Judge::GOOD_WINDOW_MS; // only judge notes within good window
-
+  float bestDiff = touchWindowMs;
   for (auto& note: beatMap.notes) {
     if (note.hit || note.missed) continue; // skip hit/missed notes
     if (note.type != type) continue; // skip wrong type
@@ -115,29 +129,37 @@ void PlayingState::handleInput(NoteType type) {
 
 void PlayingState::render(sf::RenderWindow& window) {
   auto [W, H] = window.getSize();
+  float noteY = H * 0.5f;
   
   // clear screen
-  window.clear(sf::Color::Black);
+  window.clear(sf::Color::White);
+
+  // draw hit effect
+  if (hitEffectTimer > 0) {
+    float alpha = (hitEffectTimer / 200.0f) * 255.f;
+    auto effect = NoteRender::drawHitEffect(skin, alpha);
+    std::visit([&](auto& drawable) {
+      drawable.setPosition(HIT_ZONE_X, noteY);
+      window.draw(drawable);
+    }, effect);
+  }
 
   // draw hit zone
-  sf::CircleShape hitZone(NOTE_RADIUS);
-  hitZone.setOrigin(hitZone.getRadius(), hitZone.getRadius());
-  hitZone.setPosition(HIT_ZONE_X, H * 0.5f);
-  hitZone.setFillColor(sf::Color::Transparent);
-  hitZone.setOutlineThickness(3);
-  hitZone.setOutlineColor(sf::Color::White);
-  window.draw(hitZone);
+  auto hitZone = NoteRender::drawHitZone(skin);
+  std::visit([&](auto& drawable) {
+    drawable.setPosition(HIT_ZONE_X, noteY);
+    window.draw(drawable);
+  }, hitZone);
 
   // draw notes
   for (const auto& note : beatMap.notes) {
     if (note.hit) continue;
     if (note.missed) continue;
-
-    sf::CircleShape circle(NOTE_RADIUS);
-    circle.setOrigin(NOTE_RADIUS, NOTE_RADIUS);
-    circle.setPosition(note.x, H * 0.5f);
-    circle.setFillColor(note.type == NoteType::Don ? sf::Color::Red : sf::Color::Blue);
-    window.draw(circle);
+    auto shape = NoteRender::drawNote(note, skin);
+    std::visit([&](auto& drawable) {
+      drawable.setPosition(note.x, noteY);
+      window.draw(drawable);
+    }, shape);
   }
 
   // draw score
@@ -159,8 +181,9 @@ void PlayingState::render(sf::RenderWindow& window) {
 
     // fade out
     sf::Uint8 alpha = static_cast<sf::Uint8>((resultTimer / 600.0f) * 255);
-    resultText.setFillColor(sf::Color(255, 255, 255, alpha));
-
+    if (lastResult == "PERFECT") resultText.setFillColor(sf::Color(skin.perfectColour.r, skin.perfectColour.g, skin.perfectColour.b, alpha));
+    else if (lastResult == "GOOD") resultText.setFillColor(sf::Color(skin.goodColour.r, skin.goodColour.g, skin.goodColour.b, alpha));
+    else resultText.setFillColor(sf::Color(skin.missColour.r, skin.missColour.g, skin.missColour.b, alpha));
     window.draw(resultText);
   }
 

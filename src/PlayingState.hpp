@@ -5,6 +5,7 @@
 #include "BeatMap.hpp"
 #include "Note.hpp"
 #include "Judge.hpp"
+#include "Skin.hpp"
 
 // Manny STL ^
 
@@ -15,6 +16,8 @@ public:
   void handleEvent(sf::Event& event, Game& game) override;
   void update(float dt, Game& game) override;
   void render(sf::RenderWindow& window) override;
+
+  NoteSkin& getSkin() { return skin; }
 
 private:
   void handleInput(NoteType type);
@@ -31,6 +34,8 @@ private:
   sf::Text scoreText, comboText, resultText;
   std::string lastResult = "";
   float resultTimer = 0.0f;
+  NoteSkin skin;
+  float hitEffectTimer = 0.0f;
 
   // sound effects
   sf::SoundBuffer donBuffer, kaBuffer;

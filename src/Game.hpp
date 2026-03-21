@@ -7,6 +7,7 @@
 #include <memory>
 #include "IGameState.hpp"
 #include "MenuState.hpp"
+#include "Skin.hpp"
 // Manny STL ^
 
 class Game {
