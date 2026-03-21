@@ -4,12 +4,22 @@
 #include <vector>
 #include "Note.hpp"
 #include "BeatMap.hpp"
+#include <memory>
+#include "IGameState.hpp"
 // Manny STL ^
 
 class Game {
 public:
   Game();
   void run();
+
+  // state management
+  void setState(std::unique_ptr<IGameState> newState); // replace current
+  void pushState(std::unique_ptr<IGameState> newState); // push on top of current
+  void popState(); // return to previous state
+
+  sf::Font& getFont() { return font; } // for states to access the font
+
 private:
   void processEvents(); // process input
   void update(float dt); // update game state (dt is time since last frame in milliseconds)
