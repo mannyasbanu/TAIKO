@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include "PauseState.hpp"
+#include "ResultState.hpp"
 // Manny STL ^
 
 PlayingState::PlayingState(sf::Font& font): font(font) {
@@ -47,6 +48,12 @@ void PlayingState::handleEvent(sf::Event& event, Game& game) {
 }
 
 void PlayingState::update(float dt, Game& game) {
+  songTimeMs += dt;
+  // is music finished?
+  if (songTimeMs >= music.getDuration().asMilliseconds()) {
+    game.setState(std::make_unique<ResultState>(game.getFont(), score)); // go to result screen
+  }
+  
   // scroll notes
   for (auto& note : beatMap.notes) {
     if (note.hit || note.missed) continue; // skip hit/missed notes
