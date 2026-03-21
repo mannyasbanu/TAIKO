@@ -42,12 +42,14 @@ void PlayingState::handleEvent(sf::Event& event, Game& game) {
     if (event.key.code == sf::Keyboard::F) handleInput(NoteType::Don);
     if (event.key.code == sf::Keyboard::J) handleInput(NoteType::Ka);
     if (event.key.code == sf::Keyboard::Escape) {
+      music.pause();
       game.pushState(std::make_unique<PauseState>(game.getFont())); // push pause state on top of playing state
     }
   }
 }
 
 void PlayingState::update(float dt, Game& game) {
+  if(music.getStatus() == sf::Music::Paused) music.play();
   songTimeMs += dt;
   // is music finished?
   if (songTimeMs >= music.getDuration().asMilliseconds()) {

@@ -20,18 +20,18 @@ PauseState::PauseState(sf::Font& font) {
   quitText.setFillColor(sf::Color::White);
 };
 
-PauseState::handleEvent(sf::Event& event, Game& game) {
+void PauseState::handleEvent(sf::Event& event, Game& game) {
   if (event.type == sf::Event::KeyPressed) {
     if (event.key.code == sf::Keyboard::Enter) game.popState(); // pop pause state to resume
-    if (event.key.code == sf::Keyboard::Escape) game.changeState(std::make_unique<MenuState>(game.getFont())); // go back to menu
+    if (event.key.code == sf::Keyboard::Escape) game.setState(std::make_unique<MenuState>(game.getFont())); // go back to menu
   }
 }
 
-PauseState::update(float dt, Game& game) {
+void PauseState::update(float dt, Game& game) {
   // animations etc
 }
 
-PauseState::render(sf::RenderWindow& window) {
+void PauseState::render(sf::RenderWindow& window) {
   auto [W, H] = window.getSize();
   
   // center text
