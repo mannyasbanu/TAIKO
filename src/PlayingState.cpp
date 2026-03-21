@@ -11,11 +11,11 @@
 
 PlayingState::PlayingState(sf::Font& font): font(font) {
   // load beatmap
-  if (!beatMap.load("maps/alone.txt")) {
+  if (!beatMap.load("maps/aloneMed.txt")) {
     std::cerr << "Failed to load beatmap!" << std::endl;
   }
   // load music
-  if (!music.openFromFile("assets/Alone.ogg")) {
+  if (!music.openFromFile("assets/alone.ogg")) {
     std::cerr << "Failed to load music!" << std::endl;
   }
   music.setVolume(25);
@@ -132,7 +132,7 @@ void PlayingState::render(sf::RenderWindow& window) {
   float noteY = H * 0.5f;
   
   // clear screen
-  window.clear(sf::Color::White);
+  window.clear(sf::Color(237,232,208));
 
   // draw hit effect
   if (hitEffectTimer > 0) {
