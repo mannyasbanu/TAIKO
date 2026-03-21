@@ -9,11 +9,11 @@
 
 PlayingState::PlayingState(sf::Font& font): font(font) {
   // load beatmap
-  if (!beatMap.load("maps/megalovania.txt")) {
+  if (!beatMap.load("maps/alone.txt")) {
     std::cerr << "Failed to load beatmap!" << std::endl;
   }
   // load music
-  if (!music.openFromFile("assets/MEGALOVANIA.ogg")) {
+  if (!music.openFromFile("assets/Alone.ogg")) {
     std::cerr << "Failed to load music!" << std::endl;
   }
   music.play();
@@ -50,9 +50,9 @@ void PlayingState::handleEvent(sf::Event& event, Game& game) {
 
 void PlayingState::update(float dt, Game& game) {
   if(music.getStatus() == sf::Music::Paused) music.play();
-  songTimeMs += dt;
+  songTimeMs = music.getPlayingOffset().asMilliseconds() + OFFSET_MS;
   // is music finished?
-  if (songTimeMs >= music.getDuration().asMilliseconds()) {
+  if (music.getStatus() == sf::Music::Stopped) {
     game.setState(std::make_unique<ResultState>(game.getFont(), score)); // go to result screen
   }
   
@@ -122,7 +122,7 @@ void PlayingState::render(sf::RenderWindow& window) {
   // draw hit zone
   sf::CircleShape hitZone(NOTE_RADIUS);
   hitZone.setOrigin(hitZone.getRadius(), hitZone.getRadius());
-  hitZone.setPosition(HIT_ZONE_X, 200);
+  hitZone.setPosition(HIT_ZONE_X, H * 0.5f);
   hitZone.setFillColor(sf::Color::Transparent);
   hitZone.setOutlineThickness(3);
   hitZone.setOutlineColor(sf::Color::White);
@@ -135,7 +135,7 @@ void PlayingState::render(sf::RenderWindow& window) {
 
     sf::CircleShape circle(NOTE_RADIUS);
     circle.setOrigin(NOTE_RADIUS, NOTE_RADIUS);
-    circle.setPosition(note.x, 200);
+    circle.setPosition(note.x, H * 0.5f);
     circle.setFillColor(note.type == NoteType::Don ? sf::Color::Red : sf::Color::Blue);
     window.draw(circle);
   }

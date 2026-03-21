@@ -4,9 +4,9 @@
 #include <iostream>
 // Manny STL ^
 
-Game::Game(): window(sf::VideoMode(1400, 400), "MannyTaiko") {
+Game::Game(): window(sf::VideoMode(1400, 800), "MannyTaiko") {
   // set fps limit
-  window.setFramerateLimit(60);
+  window.setFramerateLimit(200);
   // load font
   if (!font.loadFromFile("assets/PressStart2P-Regular.ttf")) {
     std::cerr << "Failed to load font!" << std::endl;

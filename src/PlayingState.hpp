@@ -40,4 +40,5 @@ private:
   static constexpr float NOTE_SPEED = 0.5f; // pixels per ms
   static constexpr float HIT_ZONE_X = 200.0f;
   static constexpr float NOTE_RADIUS = 30.0f;
+  static constexpr float OFFSET_MS = 100.0f; // adjust offset - positive means notes come earlier, negative means later
 };
