@@ -39,7 +39,7 @@ private:
   float hitEffectTimer = 0.0f;
 
   // class level constants
-  static constexpr float NOTE_SPEED = 0.7f; // pixels per ms
+  static constexpr float NOTE_SPEED = 0.8f; // pixels per ms
   static constexpr float HIT_ZONE_X = 200.0f;
   static constexpr float NOTE_RADIUS = 30.0f;
   static constexpr float OFFSET_MS = 100.0f; // adjust offset - positive means notes come earlier, negative means later
