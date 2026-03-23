@@ -12,4 +12,5 @@ public:
 private:
   sf::Text titleText;
   sf::Text startText;
+  sf::Text mapText;
 };

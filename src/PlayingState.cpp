@@ -9,21 +9,17 @@
 #include "NoteRender.hpp"
 // Manny STL ^
 
-PlayingState::PlayingState(sf::Font& font): font(font) {
+PlayingState::PlayingState(sf::Font& font, const std::string& mapName): font(font), mapName(mapName) {
   // load beatmap
-  if (!beatMap.load("maps/aloneMed.txt")) {
+  if (!beatMap.load("maps/" + mapName + ".txt")) {
     std::cerr << "Failed to load beatmap!" << std::endl;
   }
   // load music
-  if (!music.openFromFile("assets/alone.ogg")) {
+  if (!music.openFromFile("assets/" + mapName + ".ogg")) {
     std::cerr << "Failed to load music!" << std::endl;
   }
   music.setVolume(25);
   music.play();
-  // load font
-  if (!font.loadFromFile("assets/PressStart2P-Regular.ttf")) {
-    std::cerr << "Failed to load font!" << std::endl;
-  }
   // setup text
   scoreText.setFont(font); scoreText.setCharacterSize(24);
   comboText.setFont(font); comboText.setCharacterSize(36);

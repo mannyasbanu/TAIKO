@@ -2,6 +2,7 @@
 #include "Judge.hpp"
 #include <cmath>
 #include <iostream>
+#include <filesystem>
 // Manny STL ^
 
 Game::Game(): window(sf::VideoMode(1400, 800), "MannyTaiko") {
@@ -13,6 +14,10 @@ Game::Game(): window(sf::VideoMode(1400, 800), "MannyTaiko") {
   }
   // start on menu
   states.push_back(std::make_unique<MenuState>(font));
+  // get map list
+  for (const auto& entry : std::filesystem::directory_iterator("maps/"))
+    if (entry.path().extension() == ".txt")
+      mapList.push_back(entry.path().stem().string());
 }
 
 void Game::run() {
@@ -75,4 +80,11 @@ void Game::popState() {
   if (!states.empty()) {
     states.pop_back(); // remove current state, revealing previous
   }
+}
+
+std::string Game::getMapName() {
+  if (selectedMap >= 0 && selectedMap < mapList.size()) {
+    return mapList[selectedMap];
+  }
+  return "";
 }

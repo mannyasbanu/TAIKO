@@ -11,7 +11,7 @@
 
 class PlayingState : public IGameState {
 public:
-  PlayingState(sf::Font& font);
+  PlayingState(sf::Font& font, const std::string& mapName);
 
   void handleEvent(sf::Event& event, Game& game) override;
   void update(float dt, Game& game) override;
@@ -28,6 +28,7 @@ private:
   float songTimeMs = 0.0f;
   int score = 0;
   int combo = 0;
+  std::string mapName;
 
   // visuals
   sf::Font& font;
