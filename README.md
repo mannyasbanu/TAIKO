@@ -2,17 +2,26 @@
 
 A simple Taiko-style rhythm game built in C++ with SFML.
 
-## Requirements
+## Requirements & Installation
 
-- WSL2 (Ubuntu)
-- SFML, CMake, GCC
-
-Install dependencies:
+### WSL2 (Ubuntu)
     sudo apt install -y build-essential cmake libsfml-dev
+
+### macOS
+Install Homebrew if you don't have it:
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+Then install dependencies:
+
+    brew install cmake sfml
 
 ## Building
 
     ./build.sh
+
+> **macOS note:** If you see a security warning when running the binary,
+> go to System Settings → Privacy & Security → allow the app, then run again.
 
 ## Running
 
@@ -20,45 +29,53 @@ Install dependencies:
 
 ## Controls
 
-| Key | Action |
-|-----|--------|
-| F   | Don (red note) |
-| J   | Ka (blue note) |
-| Esc | Quit |
+| Key    | Action       |
+|--------|--------------|
+| F      | Don (red)    |
+| J      | Ka (blue)    |
+| Escape | Pause        |
 
 ## Beatmap Format
 
-Maps live in the `maps/` folder as plain `.txt` files.
+Maps live in `maps/` as plain `.txt` files. Each map needs a matching
+`.ogg` file in `assets/` with the same name.
 
-    # This is a comment
+    # maps/mysong.txt
     DON 1000
     KA  1500
     DON 2000
 
 Time is in milliseconds from the start of the song.
 
-## Adding Music
+Example matching pair:
 
-Drop a `.ogg` file into `assets/` and uncomment the music lines in `Game.cpp`:
-
-    if (!music.openFromFile("assets/song.ogg")) { ... }
-    music.play();
-
-Then sync `songTimeMs` to the music:
-
-    songTimeMs = music.getPlayingOffset().asMilliseconds();
+    maps/mysong.txt
+    assets/mysong.ogg
 
 ## Project Structure
 
     taiko/
-    ├── build.sh         # Build script
+    ├── build.sh
     ├── CMakeLists.txt
-    ├── assets/          # Music files (.ogg)
-    ├── maps/            # Beatmap files (.txt)
+    ├── assets/
+    │   ├── skins/
+    │   │   └── default/    # don.png, ka.png, hit_zone.png
+    │   ├── don.wav
+    │   ├── ka.wav
+    │   └── *.ogg           # music files (match map name)
+    ├── maps/
+    │   └── *.txt           # beatmap files (match music name)
     └── src/
         ├── main.cpp
         ├── Game.hpp / Game.cpp
-        ├── Note.hpp
+        ├── IGameState.hpp
+        ├── MenuState.hpp / MenuState.cpp
+        ├── PlayingState.hpp / PlayingState.cpp
+        ├── PauseState.hpp / PauseState.cpp
+        ├── ResultState.hpp / ResultState.cpp
         ├── BeatMap.hpp / BeatMap.cpp
+        ├── Note.hpp
         ├── Judge.hpp
-        └── Judge.cpp
+        ├── Skin.hpp
+        ├── NoteRender.hpp / NoteRender.cpp
+        └── beatmapper.cpp
