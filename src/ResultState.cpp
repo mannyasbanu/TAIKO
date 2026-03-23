@@ -6,17 +6,17 @@ ResultState::ResultState(sf::Font& font, int finalScore): finalScore(finalScore)
   scoreText.setFont(font);
   scoreText.setString("Final Score: " + std::to_string(finalScore));
   scoreText.setCharacterSize(48);
-  scoreText.setFillColor(sf::Color::White);
+  scoreText.setFillColor(sf::Color::Black);
   // retry text
   retryText.setFont(font);
   retryText.setString("Press Enter to Retry");
   retryText.setCharacterSize(24);
-  retryText.setFillColor(sf::Color::White);
+  retryText.setFillColor(sf::Color::Black);
   // quit text
   quitText.setFont(font);
   quitText.setString("Press Escape to Quit");
   quitText.setCharacterSize(24);
-  quitText.setFillColor(sf::Color::White);
+  quitText.setFillColor(sf::Color::Black);
 };
 
 void ResultState::handleEvent(sf::Event& event, Game& game) {

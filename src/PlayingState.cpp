@@ -126,9 +126,6 @@ void PlayingState::handleInput(NoteType type) {
 void PlayingState::render(sf::RenderWindow& window) {
   auto [W, H] = window.getSize();
   float noteY = H * 0.5f;
-  
-  // clear screen
-  window.clear(sf::Color(237,232,208));
 
   // draw hit effect
   if (hitEffectTimer > 0) {
@@ -182,6 +179,4 @@ void PlayingState::render(sf::RenderWindow& window) {
     else resultText.setFillColor(sf::Color(skin.missColour.r, skin.missColour.g, skin.missColour.b, alpha));
     window.draw(resultText);
   }
-
-  window.display();
 }

@@ -7,17 +7,17 @@ PauseState::PauseState(sf::Font& font) {
   pauseText.setFont(font);
   pauseText.setString("Game Pause");
   pauseText.setCharacterSize(48);
-  pauseText.setFillColor(sf::Color::White);
+  pauseText.setFillColor(sf::Color::Black);
   // resume text
   resumeText.setFont(font);
   resumeText.setString("Press Enter to Resume");
   resumeText.setCharacterSize(24);
-  resumeText.setFillColor(sf::Color::White);
+  resumeText.setFillColor(sf::Color::Black);
   // quit text
   quitText.setFont(font);
   quitText.setString("Press Escape to Quit");
   quitText.setCharacterSize(24);
-  quitText.setFillColor(sf::Color::White);
+  quitText.setFillColor(sf::Color::Black);
 };
 
 void PauseState::handleEvent(sf::Event& event, Game& game) {
@@ -41,7 +41,7 @@ void PauseState::render(sf::RenderWindow& window) {
   pauseText.setPosition(W / 2, H * 0.3f);
   resumeText.setPosition(W / 2, H * 0.5f);
   quitText.setPosition(W / 2, H * 0.7f);
-  
+
   // draw text
   window.draw(pauseText);
   window.draw(resumeText);

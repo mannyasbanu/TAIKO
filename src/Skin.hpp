@@ -11,7 +11,7 @@ struct NoteSkin {
   sf::Color kaColour = sf::Color(60, 120, 220);
 
   // note size
-  float noteRadius = 50.0f;
+  float noteRadius = 70.0f;
 
   // hit zone
   sf::Texture hitZoneTexture;

@@ -5,7 +5,7 @@
 #include <filesystem>
 // Manny STL ^
 
-Game::Game(): window(sf::VideoMode(1400, 800), "MannyTaiko") {
+Game::Game(): window(sf::VideoMode(1536, 1024), "MannyTaiko") {
   // set fps limit
   window.setFramerateLimit(200);
   // load font
@@ -57,11 +57,11 @@ void Game::render() {
   auto [W, H] = window.getSize();
   
   // clear screen
-  window.clear(sf::Color::Black);
+  window.clear(sf::Color(237,232,208));
 
-  // draw
-  if (!states.empty()) {
-    states.back()->render(window); // render current state
+  // draw all states bottom up
+  for (auto& state : states) {
+    state->render(window);
   }
 
   window.display();
