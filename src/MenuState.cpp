@@ -44,6 +44,7 @@ MenuState::MenuState(sf::Font& font) {
 void MenuState::handleEvent(sf::Event& event, Game& game) {
   if (event.type == sf::Event::KeyPressed) {
     if (event.key.code == sf::Keyboard::Up) {
+      game.getKaSound().play();
       int selected = game.getSelectedMap();
       if (selected > 0) game.setSelectedMap(selected - 1);
       else game.setSelectedMap(game.getMapCount() - 1);
@@ -51,6 +52,7 @@ void MenuState::handleEvent(sf::Event& event, Game& game) {
       startPreview(game.getMapName());
     }
     if (event.key.code == sf::Keyboard::Down) {
+      game.getKaSound().play();
       int selected = game.getSelectedMap();
       if (selected < game.getMapCount() - 1) game.setSelectedMap(selected + 1);
       else game.setSelectedMap(0);
@@ -58,6 +60,7 @@ void MenuState::handleEvent(sf::Event& event, Game& game) {
       startPreview(game.getMapName());
     }
     if (event.key.code == sf::Keyboard::Enter) {
+      game.getDonSound().play();
       preview.stop();
       game.setState(std::make_unique<PlayingState>(game.getFont(), game.getMapName())); // make_unique creates a unique pointer which automatically deletes the object when it goes out of scope
     }

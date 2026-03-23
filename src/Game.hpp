@@ -21,6 +21,8 @@ public:
   void popState(); // return to previous state
 
   sf::Font& getFont() { return font; } // for states to access the font
+  sf::Sound& getDonSound() { return donSound; }
+  sf::Sound& getKaSound() { return kaSound; }
 
   std::string getMapName();
   int getSelectedMap() const { return selectedMap; }
@@ -38,4 +40,8 @@ private:
 
   std::vector<std::string> mapList;
   int selectedMap = 0;
+
+  // sound effects
+  sf::SoundBuffer donBuffer, kaBuffer;
+  sf::Sound donSound, kaSound;
 };

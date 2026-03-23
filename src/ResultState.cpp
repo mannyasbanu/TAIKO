@@ -22,9 +22,11 @@ ResultState::ResultState(sf::Font& font, int finalScore): finalScore(finalScore)
 void ResultState::handleEvent(sf::Event& event, Game& game) {
   if (event.type == sf::Event::KeyPressed) {
     if (event.key.code == sf::Keyboard::Enter) {
+      game.getDonSound().play();
       game.setState(std::make_unique<PlayingState>(game.getFont(), game.getMapName())); // restart game
     }
     if (event.key.code == sf::Keyboard::Escape) {
+      game.getKaSound().play();
       game.setState(std::make_unique<MenuState>(game.getFont())); // go back to menu
     }
   }

@@ -18,6 +18,15 @@ Game::Game(): window(sf::VideoMode(1536, 1024), "MannyTaiko") {
   for (const auto& entry : std::filesystem::directory_iterator("maps/"))
     if (entry.path().extension() == ".txt")
       mapList.push_back(entry.path().stem().string());
+  // load sound effects
+  if (!donBuffer.loadFromFile("assets/don.wav")) {
+    std::cerr << "Failed to load don sound!" << std::endl;
+  }
+  if (!kaBuffer.loadFromFile("assets/ka.wav")) {
+    std::cerr << "Failed to load ka sound!" << std::endl;
+  }
+  donSound.setBuffer(donBuffer);
+  kaSound.setBuffer(kaBuffer);
 }
 
 void Game::run() {

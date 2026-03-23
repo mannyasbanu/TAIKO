@@ -20,7 +20,7 @@ public:
   NoteSkin& getSkin() { return skin; }
 
 private:
-  void handleInput(NoteType type);
+  void handleInput(NoteType type, Game& game);
 
   // gameplay
   sf::Music music;
@@ -37,10 +37,6 @@ private:
   float resultTimer = 0.0f;
   NoteSkin skin;
   float hitEffectTimer = 0.0f;
-
-  // sound effects
-  sf::SoundBuffer donBuffer, kaBuffer;
-  sf::Sound donSound, kaSound;
 
   // class level constants
   static constexpr float NOTE_SPEED = 0.7f; // pixels per ms

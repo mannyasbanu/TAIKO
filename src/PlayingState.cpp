@@ -27,15 +27,6 @@ PlayingState::PlayingState(sf::Font& font, const std::string& mapName): font(fon
   scoreText.setFillColor(sf::Color::Black);
   comboText.setFillColor(sf::Color::Black);
   resultText.setFillColor(sf::Color::Black);
-  // load sound effects
-  if (!donBuffer.loadFromFile("assets/don.wav")) {
-    std::cerr << "Failed to load don sound!" << std::endl;
-  }
-  if (!kaBuffer.loadFromFile("assets/ka.wav")) {
-    std::cerr << "Failed to load ka sound!" << std::endl;
-  }
-  donSound.setBuffer(donBuffer);
-  kaSound.setBuffer(kaBuffer);
   // load skin
   if (!skin.load("assets/skins/default/")) {
     std::cerr << "Failed to load skin, using fallback colours" << std::endl;
@@ -45,9 +36,10 @@ PlayingState::PlayingState(sf::Font& font, const std::string& mapName): font(fon
 void PlayingState::handleEvent(sf::Event& event, Game& game) {
   // read key presses
   if (event.type == sf::Event::KeyPressed) {
-    if (event.key.code == sf::Keyboard::F) handleInput(NoteType::Don);
-    if (event.key.code == sf::Keyboard::J) handleInput(NoteType::Ka);
+    if (event.key.code == sf::Keyboard::F) handleInput(NoteType::Don, game);
+    if (event.key.code == sf::Keyboard::J) handleInput(NoteType::Ka, game);
     if (event.key.code == sf::Keyboard::Escape) {
+      game.getKaSound().play();
       music.pause();
       game.pushState(std::make_unique<PauseState>(game.getFont())); // push pause state on top of playing state
     }
@@ -80,10 +72,10 @@ void PlayingState::update(float dt, Game& game) {
   if (hitEffectTimer > 0) hitEffectTimer -= dt;
 }
 
-void PlayingState::handleInput(NoteType type) {
+void PlayingState::handleInput(NoteType type, Game& game) {
   // sound effect
-  if (type == NoteType::Don) donSound.play();
-  else kaSound.play();
+  if (type == NoteType::Don) game.getDonSound().play();
+  else game.getKaSound().play();
   // hit effect
   hitEffectTimer = 100.0f;
   // only judge notes visibly touching hit zone - convert pixel overlap to ms

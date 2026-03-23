@@ -22,8 +22,14 @@ PauseState::PauseState(sf::Font& font) {
 
 void PauseState::handleEvent(sf::Event& event, Game& game) {
   if (event.type == sf::Event::KeyPressed) {
-    if (event.key.code == sf::Keyboard::Enter) game.popState(); // pop pause state to resume
-    if (event.key.code == sf::Keyboard::Escape) game.setState(std::make_unique<MenuState>(game.getFont())); // go back to menu
+    if (event.key.code == sf::Keyboard::Enter) { 
+      game.getDonSound().play();
+      game.popState(); // pop pause state to resume
+    }
+    if (event.key.code == sf::Keyboard::Escape) { 
+      game.getKaSound().play();
+      game.setState(std::make_unique<MenuState>(game.getFont())); // go back to menu
+    }
   }
 }
 
